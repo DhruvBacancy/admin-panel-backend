@@ -3,6 +3,7 @@ const dotenv = require("dotenv")
 const http = require("http")
 const cors = require("cors")
 const bodyParser = require("body-parser")
+const passport = require("passport")
 
 require("dotenv").config()
 require("./src/config/sequelize-dbconnect")
@@ -17,6 +18,8 @@ app.use(
     extended: true,
   })
 )
+
+app.use(passport.initialize())
 
 app.use(bodyParser.json())
 
