@@ -1,5 +1,4 @@
 const express = require("express")
-const dotenv = require("dotenv")
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const passport = require("passport")
@@ -21,6 +20,3 @@ app.use(passport.initialize())
 
 app.use("/auth", authRoutes)
 
-app.listen(process.env.APP_PORT, () => {
-  console.log("App Listening at:", process.env.APP_PORT)
-})
