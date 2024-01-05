@@ -1,13 +1,24 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const { User } = require("../../models")
+const { v4: uuidv4 } = require("uuid")
+const User = require("../../models/user.js")
+const sequelize = require("../../config/sequelize-dbconnect.js")
+import { Sequelize } from "sequelize"
 
 exports.register = async (req, res) => {
   try {
-    const { username, password } = req.body
+    const { firstName, lastName, email, password, role } = req.body
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    const user = await User.create({ username, password: hashedPassword })
+    const user = await User(sequelize, Sequelize.DataTypes).create({
+      id: uuidv4(),
+      email,
+      password: hashedPassword,
+      firstName,
+      lastName,
+      email,
+      role,
+    })
     res.json({ user })
   } catch (error) {
     console.error(error)
@@ -17,8 +28,10 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { username, password } = req.body
-    const user = await User.findOne({ where: { username } })
+    const { email, password } = req.body
+    const user = await User(sequelize, Sequelize.DataTypes).findOne({
+      where: { email },
+    })
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       res.status(401).json({ error: "Invalid credentials" })

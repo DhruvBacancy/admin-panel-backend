@@ -5,7 +5,7 @@ import * as authController from "../controllers/user/userAuth"
 const router = express.Router()
 
 router.post("/register", authController.register)
-router.post("/login", authController.login)
+router.get("/login", authController.login)
 router.get(
   "/protected",
   passport.authenticate("jwt", { session: false }),

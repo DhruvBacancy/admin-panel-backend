@@ -2,9 +2,8 @@ const express = require("express")
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const passport = require("passport")
-import authRoutes  from "./src/routes/api"
+import adminRoutes from "./src/routes/api"
 
-require("dotenv").config()
 require("./src/config/sequelize-dbconnect")
 
 const app = express()
@@ -18,5 +17,6 @@ app.use(
 )
 app.use(passport.initialize())
 
-app.use("/auth", authRoutes)
+app.use("/admin", adminRoutes)
 
+module.exports = app
