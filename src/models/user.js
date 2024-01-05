@@ -1,6 +1,3 @@
-const Sequelize = require("sequelize")
-const sequelize = require("../config/sequelize-dbconnect")
-
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define("Users", {
     id: {

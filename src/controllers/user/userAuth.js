@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
       email,
       role,
     })
-    res.json({ user })
+    res.json({ id, email, firstName, lastName, role })
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: "Internal Server Error" })
@@ -38,8 +38,8 @@ exports.login = async (req, res) => {
       return
     }
 
-    const payload = { sub: user.id }
-    const token = jwt.sign(payload, "your-secret-key")
+    const payload = { id: user.id, role: user.role }
+    const token = jwt.sign(payload, process.env.JWT_SECRET)
     res.json({ token })
   } catch (error) {
     console.error(error)
