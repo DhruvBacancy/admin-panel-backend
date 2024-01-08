@@ -4,6 +4,7 @@ const passport = require("passport")
 const User = require("../models/user")
 const sequelize = require("../config/sequelize-dbconnect")
 const { Sequelize } = require("sequelize")
+const { errorResponse } = require("../util/responseHandlers")
 const secret = process.env.JWT_SECRET
 
 const opts = {
@@ -16,9 +17,26 @@ passport.use(
     User(sequelize, Sequelize.DataTypes)
       .findOne({ where: { id: jwt_payload.id } })
       .then((user) => {
-        if (user) return done(null, { id: user.id, role: user.role })
-        return done(null, false)
+        if (user) {
+          return done(null, { id: user.id, role: user.role })
+        } else {
+          return done(null, false)
+        }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        return done(err, false)
+      })
   })
 )
+
+exports.requireSignIn = (req, res, next) => {
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+    if (err || !user) {
+      const error = info.message
+      return errorResponse(req, res, 500, error)
+    }
+    req.user = user
+    return next()
+  })(req, res, next)
+}
