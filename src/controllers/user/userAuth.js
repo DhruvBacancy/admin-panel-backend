@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require("uuid")
 const User = require("../../models/user.js")
 const sequelize = require("../../config/sequelize-dbconnect.js")
 import { Sequelize } from "sequelize"
+import { errorResponse, successResponse } from "../../util/responseHandlers.js"
 
 exports.register = async (req, res) => {
   try {
@@ -19,10 +20,10 @@ exports.register = async (req, res) => {
       email,
       role,
     })
-    res.json({ id, email, firstName, lastName, role })
+    return successResponse(req, res, "Registration Successful")
   } catch (error) {
     console.error(error)
-    res.status(500).json({ error: "Internal Server Error" })
+    return errorResponse(req, res, 500, error.message)
   }
 }
 
@@ -34,16 +35,15 @@ exports.login = async (req, res) => {
     })
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      res.status(401).json({ error: "Invalid credentials" })
-      return
+      return errorResponse(req, res, 401, "Invalid credentials")
     }
 
     const expiresIn = process.env.JWT_EXPIRATION_TIME
     const payload = { id: user.id, role: user.role }
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn })
-    res.json({ token })
+    return successResponse(req, res, { token })
   } catch (error) {
     console.error(error)
-    res.status(500).json({ error: "Internal Server Error" })
+    return errorResponse(req, res, 500, error.message)
   }
 }
