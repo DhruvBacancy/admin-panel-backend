@@ -8,6 +8,7 @@ exports.isAdmin = (req, res, next) => {
       return errorResponse(req, res, 500, "Access is Forbidden")
     }
   } catch (error) {
-    return errorResponse(req, res, 500, error.message)
+    const errorMessage = error.message
+    return errorResponse(req, res, 500, errorMessage)
   }
 }

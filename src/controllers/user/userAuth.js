@@ -22,8 +22,9 @@ exports.register = async (req, res) => {
     })
     return successResponse(req, res, "Registration Successful")
   } catch (error) {
-    console.error(error)
-    return errorResponse(req, res, 500, error.message)
+    console.log(error.message)
+    const errorMessage = error.message
+    return errorResponse(req, res, 500, errorMessage)
   }
 }
 
@@ -41,9 +42,10 @@ exports.login = async (req, res) => {
     const expiresIn = process.env.JWT_EXPIRATION_TIME
     const payload = { id: user.id, role: user.role }
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn })
-    return successResponse(req, res, { token })
+    return successResponse(req, res, { token, role: user.role, id: user.id })
   } catch (error) {
     console.error(error)
-    return errorResponse(req, res, 500, error.message)
+    const errorMessage = error.message
+    return errorResponse(req, res, 500, errorMessage)
   }
 }

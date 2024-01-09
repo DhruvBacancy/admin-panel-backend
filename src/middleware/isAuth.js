@@ -33,8 +33,8 @@ passport.use(
 exports.requireSignIn = (req, res, next) => {
   passport.authenticate("jwt", { session: false }, (err, user, info) => {
     if (err || !user) {
-      const error = info.message
-      return errorResponse(req, res, 500, error)
+      const errorMessage = info.message
+      return errorResponse(req, res, 500, errorMessage)
     }
     req.user = user
     return next()
