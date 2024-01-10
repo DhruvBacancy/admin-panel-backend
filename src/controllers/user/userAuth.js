@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const { v4: uuidv4 } = require("uuid")
+
 const User = require("../../models/user.js")
 const sequelize = require("../../config/sequelize-dbconnect.js")
 import { Sequelize } from "sequelize"
