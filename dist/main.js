@@ -6,7 +6,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    await app.listen(3000);
+    await app.listen(process.env.APP_PORT);
+    console.log(`App running on http://localhost:${process.env.APP_PORT}`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
