@@ -59,7 +59,10 @@ export class AuthService {
 
       const expiresIn = process.env.JWT_EXPIRATION_TIME
       const payload = { id: user.id, role: user.role }
-      const token = this.jwtService.sign(payload, { expiresIn })
+      const token = this.jwtService.sign(payload, {
+        secret: process.env.JWT_SECRET,
+        expiresIn,
+      })
       return { token, role: user.role, id: user.id }
     } catch (error) {
       console.error(error)

@@ -7,6 +7,6 @@ import { DatabaseModule } from './database/database.module'
 dotenv.config()
 
 @Module({
-  imports: [AuthModule, UserOperationsModule, DatabaseModule],
+  imports: [DatabaseModule, AuthModule, UserOperationsModule],
 })
 export class AppModule {}
