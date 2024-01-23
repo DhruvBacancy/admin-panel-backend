@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize-typescript'
 import * as dotenv from 'dotenv'
 import { Dialect } from 'sequelize'
+import { User } from '../models/user.model'
 
 dotenv.config()
 
@@ -16,7 +17,7 @@ export const databaseProviders = [
         password: process.env.DB_PASS,
         database: process.env.DB_NAME,
       })
-      sequelize.addModels([])
+      sequelize.addModels([User])
       try {
         await sequelize.authenticate()
         console.log('Connection has been established successfully.')

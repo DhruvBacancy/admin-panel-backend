@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.databaseProviders = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const dotenv = require("dotenv");
+const user_model_1 = require("../models/user.model");
 dotenv.config();
 exports.databaseProviders = [
     {
@@ -16,7 +17,7 @@ exports.databaseProviders = [
                 password: process.env.DB_PASS,
                 database: process.env.DB_NAME,
             });
-            sequelize.addModels([]);
+            sequelize.addModels([user_model_1.User]);
             try {
                 await sequelize.authenticate();
                 console.log('Connection has been established successfully.');
