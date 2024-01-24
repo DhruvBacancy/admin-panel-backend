@@ -7,11 +7,16 @@ import {
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
 import { v4 as uuidv4 } from 'uuid'
+import { InjectModel } from '@nestjs/sequelize'
 import { User } from '../models/user.model'
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    @InjectModel(User)
+    private userModel: typeof User,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async registerUser({
     firstName,
@@ -28,7 +33,7 @@ export class AuthService {
   }): Promise<string> {
     try {
       const hashedPassword = await bcrypt.hash(password, 10)
-      const user = await User.create({
+      const user = await this.userModel.create({
         id: uuidv4(),
         email,
         password: hashedPassword,
@@ -51,7 +56,7 @@ export class AuthService {
     password: string
   }): Promise<{ token: string; role: string; id: string }> {
     try {
-      const user = await User.findOne({ where: { email } })
+      const user = await this.userModel.findOne({ where: { email } })
 
       if (!user || !(await bcrypt.compare(password, user.password))) {
         throw new UnauthorizedException('Invalid credentials')

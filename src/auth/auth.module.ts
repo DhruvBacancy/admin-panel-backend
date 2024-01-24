@@ -4,6 +4,8 @@ import { PassportModule } from '@nestjs/passport'
 import { JwtStrategy } from './auth.strategy'
 import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
+import { User } from 'src/models/user.model'
+import { SequelizeModule } from '@nestjs/sequelize'
 
 @Module({
   imports: [
@@ -12,9 +14,10 @@ import { AuthController } from './auth.controller'
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION_TIME },
     }),
+    SequelizeModule.forFeature([User]),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
-  exports: [PassportModule, JwtModule, AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
