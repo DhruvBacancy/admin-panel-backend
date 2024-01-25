@@ -8,7 +8,6 @@ dotenv.config()
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.useGlobalFilters(new GlobalExceptionsFilter())
   app.setGlobalPrefix('admin')
   app.enableCors({
     allowedHeaders: ['content-type', 'Authorization'],
@@ -34,6 +33,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api', app, document)
 
+  app.useGlobalFilters(new GlobalExceptionsFilter())
   await app.listen(process.env.APP_PORT)
   console.log(`App running on http://localhost:${process.env.APP_PORT}`)
 }

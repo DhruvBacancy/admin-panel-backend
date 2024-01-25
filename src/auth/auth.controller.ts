@@ -1,20 +1,24 @@
-import { Controller, Post, Body } from '@nestjs/common'
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { ApiTags } from '@nestjs/swagger'
-@ApiTags('Auth')
+import { ApiResponse } from '../response-format/response'
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  async register(@Body() body: any): Promise<string> {
-    return this.authService.registerUser(body)
+  register(@Body() body: any): Promise<any> {
+    try {
+      return this.authService.registerUser(body)
+    } catch (error) {
+      throw error // The GlobalExceptionFilter will handle it
+    }
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(
-    @Body() body: any,
-  ): Promise<{ token: string; role: string; id: string }> {
+  login(@Body() body: any): Promise<any> {
     return this.authService.loginUser(body)
   }
 }

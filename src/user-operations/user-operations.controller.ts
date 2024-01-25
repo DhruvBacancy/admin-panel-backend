@@ -1,13 +1,22 @@
-import { Controller, Get, Patch, Delete } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Patch,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common'
 import { UserOperationsService } from './user-operations.service'
 import { ApiTags } from '@nestjs/swagger'
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 @ApiTags('User-CRUD')
 @Controller('/user')
 export class UserOperationsController {
   constructor(private readonly userService: UserOperationsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async findall(): Promise<{}> {
+  async findall(@Request() req): Promise<{}> {
     console.log('dvvsrv')
     return
   }
