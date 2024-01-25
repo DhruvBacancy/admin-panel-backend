@@ -59,23 +59,44 @@ $ npm run test:cov
 ```
 ## Api Endpoints
 
-- http://localhost:${process.env.APP_PORT}/api - Get all api end points at this URL
+- http://localhost:{APP_PORT}/api - Get all api end points at this URL
+
+```bash
+POST /admin/auth/register - Register User
+
+POST /admin/auth/login - User Login
+
+GET /admin/user - Get All Users
+
+GET /admin/user/{id} - Get User By Id
+
+PATCH /admin/user/edit/{id} - Edit User By Id
+
+DELETE /admin/user/delete/{id} - Delete User By Id
+``` 
 
 ## Required .env values
 
 Create a .env file and assign values to the mentioned variables
 
 DB_HOST=
+
 DB_USER=
+
 DB_PASS=
+
 DB_NAME=
+
 DB_DIALECT=
+
 DB_PORT=
 
 APP_HOST=
+
 APP_PORT=
 
 JWT_SECRET=
+
 JWT_EXPIRATION_TIME=
 
 ## Support
