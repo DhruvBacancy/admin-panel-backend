@@ -8,13 +8,14 @@ import {
 } from '@nestjs/common'
 import { UserOperationsService } from './user-operations.service'
 import { ApiTags } from '@nestjs/swagger'
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard'
+import { IsAdminGuard } from 'src/guards/admin.guard'
 @ApiTags('User-CRUD')
 @Controller('/user')
 export class UserOperationsController {
   constructor(private readonly userService: UserOperationsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, IsAdminGuard)
   @Get()
   async findall(@Request() req): Promise<{}> {
     console.log('dvvsrv')
