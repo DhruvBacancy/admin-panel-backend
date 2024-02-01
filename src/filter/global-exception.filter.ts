@@ -12,6 +12,10 @@ export class GlobalExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp()
     const response = ctx.getResponse<Response>()
 
+    if (exception?.response?.message) {
+      exception.message = exception?.response?.message
+    }
+
     if (exception instanceof HttpException) {
       const errorResponseData: ApiResponse<any> = {
         code: exception.getStatus(),

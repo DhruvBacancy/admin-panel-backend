@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { User } from 'src/models/user.model'
 import { ApiResponse, successResponse } from 'src/response-format/response'
+import { EditUserDto } from './dto/user.dto'
 
 @Injectable()
 export class UserOperationsService {
@@ -48,7 +49,7 @@ export class UserOperationsService {
     return successResponse(HttpStatus.OK, 'User Fetched', user)
   }
 
-  async editUserById({ id }, body): Promise<ApiResponse<any>> {
+  async editUserById({ id }, body: EditUserDto): Promise<ApiResponse<any>> {
     const { firstName, lastName, email, role } = body
     const updatedUser = await this.userModel.update(
       { firstName, lastName, email, role },

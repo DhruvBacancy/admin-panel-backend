@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common'
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
 import { v4 as uuidv4 } from 'uuid'
@@ -11,6 +6,7 @@ import { InjectModel } from '@nestjs/sequelize'
 import { User } from '../models/user.model'
 import { ApiResponse } from '../response-format/response'
 import { successResponse } from 'src/response-format/response'
+import { LoginDto, RegisterDto } from './dto/auth.dto'
 
 @Injectable()
 export class AuthService {
@@ -20,19 +16,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async registerUser({
-    firstName,
-    lastName,
-    email,
-    password,
-    role,
-  }: {
-    firstName: string
-    lastName: string
-    email: string
-    password: string
-    role: string
-  }): Promise<ApiResponse<any>> {
+  async registerUser(body: RegisterDto): Promise<ApiResponse<any>> {
+    const { firstName, lastName, email, password, role } = body
     const hashedPassword = await bcrypt.hash(password, 10)
     const user = await this.userModel.create({
       id: uuidv4(),
@@ -50,13 +35,8 @@ export class AuthService {
     })
   }
 
-  async loginUser({
-    email,
-    password,
-  }: {
-    email: string
-    password: string
-  }): Promise<any> {
+  async loginUser(body: LoginDto): Promise<any> {
+    const { email, password } = body
     const user = await this.userModel.findOne({ where: { email } })
 
     if (!user) {
