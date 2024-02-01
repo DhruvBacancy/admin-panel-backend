@@ -5,6 +5,8 @@ import {
   Delete,
   UseGuards,
   Request,
+  Param,
+  Body,
 } from '@nestjs/common'
 import { UserOperationsService } from './user-operations.service'
 import { ApiTags } from '@nestjs/swagger'
@@ -17,26 +19,25 @@ export class UserOperationsController {
 
   @UseGuards(JwtAuthGuard, IsAdminGuard)
   @Get()
-  async findall(@Request() req): Promise<{}> {
-    console.log('dvvsrv')
-    return
+  findallUsers(@Request() req): Promise<{}> {
+    return this.userService.getAllUsers()
   }
 
+  @UseGuards(JwtAuthGuard, IsAdminGuard)
   @Get(':id')
-  async findOne(): Promise<{}> {
-    console.log('in id')
-    return
+  findOneUser(@Request() req, @Param() id): Promise<any> {
+    return this.userService.getUserById(id)
   }
 
+  @UseGuards(JwtAuthGuard, IsAdminGuard)
   @Patch('edit/:id')
-  async editbyid(): Promise<{}> {
-    console.log('in patch id')
-    return
+  editById(@Request() req, @Param() id, @Body() body): Promise<{}> {
+    return this.userService.editUserById(id, body)
   }
 
+  @UseGuards(JwtAuthGuard, IsAdminGuard)
   @Delete('delete/:id')
-  async delete(): Promise<{}> {
-    console.log('in delte id')
-    return
+  deleteById(@Request() req, @Param() id): Promise<{}> {
+    return this.userService.deleteById(id)
   }
 }

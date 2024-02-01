@@ -9,11 +9,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
   register(@Body() body: any): Promise<any> {
-    try {
-      return this.authService.registerUser(body)
-    } catch (error) {
-      throw error // The GlobalExceptionFilter will handle it
-    }
+    return this.authService.registerUser(body)
   }
 
   @HttpCode(HttpStatus.OK)

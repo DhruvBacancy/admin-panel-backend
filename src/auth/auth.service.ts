@@ -1,4 +1,3 @@
-// auth.service.ts
 import {
   Injectable,
   UnauthorizedException,
@@ -34,23 +33,21 @@ export class AuthService {
     password: string
     role: string
   }): Promise<ApiResponse<any>> {
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10)
-      const user = await this.userModel.create({
-        id: uuidv4(),
-        email,
-        password: hashedPassword,
-        firstName,
-        lastName,
-        role,
-      })
-      return successResponse(HttpStatus.CREATED, 'Registration Successful', {
-        msg: 'Registration Successful',
-      })
-    } catch (error) {
-      console.error(error)
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const user = await this.userModel.create({
+      id: uuidv4(),
+      email,
+      password: hashedPassword,
+      firstName,
+      lastName,
+      role,
+    })
+    if (!user) {
       throw new HttpException('Registration failed', HttpStatus.BAD_REQUEST)
     }
+    return successResponse(HttpStatus.CREATED, 'Registration Successful', {
+      msg: 'Registration Successful',
+    })
   }
 
   async loginUser({

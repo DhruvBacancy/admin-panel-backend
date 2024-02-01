@@ -32,19 +32,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         if (user) {
           return { id: user.id, role: user.role }
         } else {
-          console.log('in else')
           throw new HttpException('User not found', HttpStatus.UNAUTHORIZED)
         }
       })
       .catch((err) => {
-        console.log('in error')
-
         console.log(err)
-        // throw new ApiException(
-        //   'Internal Server Error',
-        //   500,
-        //   'An error occurred while validating the user',
-        // )
         throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR)
       })
     return user
