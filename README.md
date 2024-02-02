@@ -77,6 +77,7 @@ DELETE /admin/user/delete/{id} - Delete User By Id
 
 ## Required .env values
 
+```
 Create a .env file and assign values to the mentioned variables
 
 DB_HOST=
@@ -98,6 +99,7 @@ APP_PORT=
 JWT_SECRET=
 
 JWT_EXPIRATION_TIME=
+```
 
 ## Support
 

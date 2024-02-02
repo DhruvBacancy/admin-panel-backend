@@ -29,7 +29,11 @@ export class UserOperationsController {
   }
 
   @Patch('edit/:id')
-  editById(@Request() req, @Param() id: IdDto, @Body() body:EditUserDto): Promise<{}> {
+  editById(
+    @Request() req,
+    @Param() id: IdDto,
+    @Body() body: EditUserDto,
+  ): Promise<{}> {
     return this.userService.editUserById(id, body)
   }
 
